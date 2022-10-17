@@ -1,21 +1,47 @@
-#
+# Creating the vpc
 
-terraform {
-  required_providers {
-    aws = {
-      source  = "hashicorp/aws"
-      version = "4.34.0"
-    }
-  }
+resource "aws_vpc" "Demo-terraform-project" {
+  cidr_block       = "10.10.0.0/16"
+  instance_tenancy = "default"
 
-   backend "s3" {
-    bucket = "sr3m-project"
-    key    = "state"
-    region = "us-east-1"
+  tags = {
+    Name = "Demo-terraform-project"
   }
 }
 
-# Configure the AWS Provider
-provider "aws" {
-  region = var.REGION
+# Creating the subnets
+
+resource "aws_subnet" "mysubnet-1a" {
+  vpc_id     = aws_vpc.Demo-terraform-project.id
+  cidr_block = "10.10.1.0/24"
+  availability_zone = "ap-south-1a"
+  map_public_ip_on_launch = "true"
+
+  tags = {
+    Name = "terraform-subnet-1a"
+  }
+}
+
+resource "aws_subnet" "mysubnet-1b" {
+  vpc_id     = aws_vpc.Demo-terraform-project.id
+  cidr_block = "10.10.2.0/24"
+  availability_zone = "ap-south-1b"
+  map_public_ip_on_launch = "true"
+
+  tags = {
+    Name = "terraform-subnet-1b"
+  }
+}
+
+# Creating private subnet
+
+resource "aws_subnet" "mysubnet-1c" {
+  vpc_id     = aws_vpc.Demo-terraform-project.id
+  cidr_block = "10.10.3.0/24"
+  availability_zone = "ap-south-1c"
+  map_public_ip_on_launch = "false"
+
+  tags = {
+    Name = "terraform-subnet-1c"
+  }
 }

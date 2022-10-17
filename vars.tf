@@ -16,3 +16,8 @@ variable EC2-instance-type {
    type = string
    default = "t2.micro"
 }
+
+variable EC2-key-pair {
+   type = string
+   default = "linux-machine-on-aws-1"
+}
